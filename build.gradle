@@ -1,15 +1,28 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.github.erizo.gradle:jcstress-gradle-plugin:0.8.6'
+    }
+}
+
 plugins {
     id 'java'
     id 'application'
     id 'jacoco'
-    id "com.github.spotbugs" version "4.6.0"
+    id 'com.github.spotbugs' version '4.6.0'
 }
+
+apply plugin: 'jcstress'
 
 group 'demo'
 version '0.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 // use JDK 11
@@ -28,6 +41,8 @@ jacocoTestReport {
 
 spotbugs {
     toolVersion = '4.1.4'
+    // ignore issue about org.openjdk.jcstress.infra.results.IIIII_Result missing @Override
+    onlyAnalyze = [ 'demo.LFU', 'demo.LFUTests' ]
 }
 
 dependencies {
