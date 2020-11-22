@@ -82,16 +82,18 @@ public final class LFU<K, V> {
         if (null == key) throw new NullPointerException();
 
         modificationLock.lock();
+        V result = null;
         try {
             if (!lookup.containsKey(key)) {
                 return null;
             }
             queue.remove(key);
             queue.addFirst(key);
+            result = lookup.get(key);
         } finally {
             modificationLock.unlock();
         }
-        return lookup.get(key);
+        return result;
     }
 
     /**
